@@ -9,6 +9,7 @@ import TalismanNFT from "~~/components/TalismanNFT";
 const Home: NextPage = () => {
   const { address } = useAccount();
 
+
   return (
     <>
       <OwnerPanel />
@@ -16,7 +17,7 @@ const Home: NextPage = () => {
         <div className="px-5">
           {address
             ? <TalismanNFT />
-            : <p>Please connect your wallet to play the game.</p>}
+            : <p>Please connect your wallet.</p>}
         </div>
       </div>
     </>
