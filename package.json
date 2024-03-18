@@ -31,8 +31,8 @@
     "next:build": "yarn workspace @whitelistnft/nextjs build",
     "postinstall": "husky install",
     "precommit": "lint-staged",
-    "vercel": "vercel",
-    "vercel:yolo": "vercel --build-env NEXT_PUBLIC_IGNORE_BUILD_ERROR=true"
+    "vercel": "yarn workspace @whitelistnft/nextjs vercel",
+    "vercel:yolo": "yarn workspace @whitelistnft/nextjs vercel:yolo"
   },
   "packageManager": "yarn@3.2.3",
   "devDependencies": {

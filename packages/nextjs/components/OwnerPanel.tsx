@@ -44,7 +44,7 @@ const OwnerPanel = () => {
 
   return (
     <>
-      {ownerAddress === address ? (
+      {!!address && ownerAddress === address ? (
         <div className="card rounded-xl m-5">
           <div className="p-10 card-body flex flex-col gap-5">
             <h2 className="text-2xl font-bold">Owner Panel</h2>
