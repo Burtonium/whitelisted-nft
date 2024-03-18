@@ -21,6 +21,9 @@ export const NETWORKS_EXTRA_DATA: Record<string, ChainAttributes> = {
   [chains.sepolia.id]: {
     color: ["#5f4bb6", "#87ff65"],
   },
+  [chains.goerli.id]: {
+    color: "#0975F6",
+  },
   [chains.gnosis.id]: {
     color: "#48a9a6",
   },
@@ -32,13 +35,13 @@ export const NETWORKS_EXTRA_DATA: Record<string, ChainAttributes> = {
     color: "#92D9FA",
     nativeCurrencyTokenAddress: "0x7D1AfA7B718fb893dB30A3aBc0Cfc608AaCfeBB0",
   },
-  [chains.optimismSepolia.id]: {
+  [chains.optimismGoerli.id]: {
     color: "#f01a37",
   },
   [chains.optimism.id]: {
     color: "#f01a37",
   },
-  [chains.arbitrumSepolia.id]: {
+  [chains.arbitrumGoerli.id]: {
     color: "#28a0f0",
   },
   [chains.arbitrum.id]: {
@@ -87,9 +90,6 @@ export function getBlockExplorerTxLink(chainId: number, txnHash: string) {
  */
 export function getBlockExplorerAddressLink(network: chains.Chain, address: string) {
   const blockExplorerBaseURL = network.blockExplorers?.default?.url;
-  if (network.id === chains.hardhat.id) {
-    return `/blockexplorer/address/${address}`;
-  }
 
   if (!blockExplorerBaseURL) {
     return `https://etherscan.io/address/${address}`;

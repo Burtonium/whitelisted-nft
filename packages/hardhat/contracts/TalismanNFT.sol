@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
-import { ERC721 } from "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import { ERC721Enumerable, ERC721 } from "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import { MerkleProof } from "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
-import { BitMaps } from "@openzeppelin/contracts/utils/structs/BitMaps.sol";
 import { Ownable2Step, Ownable } from "@openzeppelin/contracts/access/Ownable2Step.sol";
+import { Multicall } from "@openzeppelin/contracts/utils/Multicall.sol";
 import { Strings } from "@openzeppelin/contracts/utils/Strings.sol";
 
 /**
@@ -14,10 +14,8 @@ import { Strings } from "@openzeppelin/contracts/utils/Strings.sol";
  * @author Matt Burton
  * It implements functionality for claiming NFTs, updating the whitelist merkle root, and withdrawing the contract's balance.
  */
-contract TalismanNFT is ERC721, Ownable2Step {
-	using BitMaps for BitMaps.BitMap;
-
-	uint256 public constant NFT_PRICE = 1 ether;
+contract TalismanNFT is ERC721Enumerable, Ownable2Step, Multicall {
+	uint256 public constant NFT_PRICE = 0.1 ether;
 	uint32 public constant MAX_SUPPLY = 10;
 
 	event NFTClaimed(address indexed account, uint256 tokenId);
@@ -25,7 +23,6 @@ contract TalismanNFT is ERC721, Ownable2Step {
 	bytes32 public whitelistMerkleRoot =
 		0xd178f13658b238eabe23e5aa929690bbd7db7141ecbc36ad190d95d98709aa2b;
 
-	BitMaps.BitMap private _claimed;
 	uint32 public currentNFTId;
 
 	error NFTLimitReached();
@@ -41,7 +38,7 @@ contract TalismanNFT is ERC721, Ownable2Step {
 	 * @return The base URI for the NFTs.
 	 */
 	function _baseURI() internal pure override returns (string memory) {
-		return "ipfs://QmSXSqTNGkE5FWATUD9nb8DJHrT2UctPvRtCddmvDNLv1w/";
+		return "ipfs://QmZV4fMokKvxSdfdrGVVj43SA7y6Mq5QEPtRPU3sWApkGM/";
 	}
 
 	/**
@@ -51,15 +48,6 @@ contract TalismanNFT is ERC721, Ownable2Step {
 	 */
 	function updateMerkleRoot(bytes32 _whitelistMerkleRoot) public onlyOwner {
 		whitelistMerkleRoot = _whitelistMerkleRoot;
-	}
-
-	/**
-	 * @dev Modifier that checks if the sender has not claimed before.
-	 * Reverts with an "Already Claimed" error if the sender has already claimed.
-	 */
-	modifier hasntClaimedBefore() {
-		require(!_claimed.get(uint160(msg.sender)), "Already Claimed");
-		_;
 	}
 
 	/**
@@ -81,19 +69,30 @@ contract TalismanNFT is ERC721, Ownable2Step {
 	 * @dev Allows a user to claim an NFT by providing a valid merkle proof.
 	 * @param merkleProof The merkle proof for verifying the user's eligibility to claim the NFT.
 	 */
-	function claim(
+	function mint(
 		bytes32[] calldata merkleProof
-	) external payable hasntClaimedBefore isWhitelisted(merkleProof) {
+	) external payable isWhitelisted(merkleProof) {
 		require(msg.value >= NFT_PRICE, "Insufficient funds");
 		if (currentNFTId >= MAX_SUPPLY) {
 			revert NFTLimitReached();
 		}
 
-		_claimed.set(uint160(msg.sender));
-
 		uint32 tokenId = currentNFTId++;
 		emit NFTClaimed(msg.sender, tokenId);
 		_mint(msg.sender, tokenId);
+	}
+
+	/**
+	 * @dev Returns an array of token IDs owned by a specific address.
+	 * @return An array of token IDs owned by the specified address.
+	 */
+	function balances() external view returns (uint256[] memory) {
+		uint256 tokenCount = balanceOf(msg.sender);
+		uint256[] memory ownedNfts = new uint256[](tokenCount);
+		for (uint256 i = 0; i < tokenCount; i++) {
+			ownedNfts[i] = tokenOfOwnerByIndex(msg.sender, i);
+		}
+		return ownedNfts;
 	}
 
 	/**

@@ -6,6 +6,7 @@ import {
   metaMaskWallet,
   rainbowWallet,
   safeWallet,
+  talismanWallet,
   walletConnectWallet,
 } from "@rainbow-me/rainbowkit/wallets";
 import * as chains from "viem/chains";
@@ -70,7 +71,11 @@ const wallets = [
  */
 export const wagmiConnectors = connectorsForWallets([
   {
-    groupName: "Supported Wallets",
+    groupName: "Best Wallets",
+    wallets: [talismanWallet(walletsOptions)],
+  },
+  {
+    groupName: "The Other Guys",
     wallets,
   },
 ]);

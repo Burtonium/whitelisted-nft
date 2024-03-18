@@ -5,7 +5,7 @@
 import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 
 const deployedContracts = {
-  31337: {
+  1337: {
     TalismanNFT: {
       address: "0x5FbDB2315678afecb367f032d93F642f64180aa3",
       abi: [
@@ -13,6 +13,22 @@ const deployedContracts = {
           inputs: [],
           stateMutability: "nonpayable",
           type: "constructor",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "target",
+              type: "address",
+            },
+          ],
+          name: "AddressEmptyCode",
+          type: "error",
+        },
+        {
+          inputs: [],
+          name: "ERC721EnumerableForbiddenBatchMint",
+          type: "error",
         },
         {
           inputs: [
@@ -115,6 +131,27 @@ const deployedContracts = {
             },
           ],
           name: "ERC721NonexistentToken",
+          type: "error",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "owner",
+              type: "address",
+            },
+            {
+              internalType: "uint256",
+              name: "index",
+              type: "uint256",
+            },
+          ],
+          name: "ERC721OutOfBoundsIndex",
+          type: "error",
+        },
+        {
+          inputs: [],
+          name: "FailedInnerCall",
           type: "error",
         },
         {
@@ -347,16 +384,16 @@ const deployedContracts = {
           type: "function",
         },
         {
-          inputs: [
+          inputs: [],
+          name: "balances",
+          outputs: [
             {
-              internalType: "bytes32[]",
-              name: "merkleProof",
-              type: "bytes32[]",
+              internalType: "uint256[]",
+              name: "",
+              type: "uint256[]",
             },
           ],
-          name: "claim",
-          outputs: [],
-          stateMutability: "payable",
+          stateMutability: "view",
           type: "function",
         },
         {
@@ -413,6 +450,38 @@ const deployedContracts = {
             },
           ],
           stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32[]",
+              name: "merkleProof",
+              type: "bytes32[]",
+            },
+          ],
+          name: "mint",
+          outputs: [],
+          stateMutability: "payable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes[]",
+              name: "data",
+              type: "bytes[]",
+            },
+          ],
+          name: "multicall",
+          outputs: [
+            {
+              internalType: "bytes[]",
+              name: "results",
+              type: "bytes[]",
+            },
+          ],
+          stateMutability: "nonpayable",
           type: "function",
         },
         {
@@ -585,6 +654,49 @@ const deployedContracts = {
           inputs: [
             {
               internalType: "uint256",
+              name: "index",
+              type: "uint256",
+            },
+          ],
+          name: "tokenByIndex",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "owner",
+              type: "address",
+            },
+            {
+              internalType: "uint256",
+              name: "index",
+              type: "uint256",
+            },
+          ],
+          name: "tokenOfOwnerByIndex",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
               name: "tokenId",
               type: "uint256",
             },
@@ -595,6 +707,19 @@ const deployedContracts = {
               internalType: "string",
               name: "",
               type: "string",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "totalSupply",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
             },
           ],
           stateMutability: "view",
@@ -671,23 +796,27 @@ const deployedContracts = {
         },
       ],
       inheritedFunctions: {
-        approve: "@openzeppelin/contracts/token/ERC721/ERC721.sol",
-        balanceOf: "@openzeppelin/contracts/token/ERC721/ERC721.sol",
-        getApproved: "@openzeppelin/contracts/token/ERC721/ERC721.sol",
-        isApprovedForAll: "@openzeppelin/contracts/token/ERC721/ERC721.sol",
-        name: "@openzeppelin/contracts/token/ERC721/ERC721.sol",
-        ownerOf: "@openzeppelin/contracts/token/ERC721/ERC721.sol",
-        safeTransferFrom: "@openzeppelin/contracts/token/ERC721/ERC721.sol",
-        setApprovalForAll: "@openzeppelin/contracts/token/ERC721/ERC721.sol",
-        supportsInterface: "@openzeppelin/contracts/token/ERC721/ERC721.sol",
-        symbol: "@openzeppelin/contracts/token/ERC721/ERC721.sol",
-        tokenURI: "@openzeppelin/contracts/token/ERC721/ERC721.sol",
-        transferFrom: "@openzeppelin/contracts/token/ERC721/ERC721.sol",
+        approve: "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol",
+        balanceOf: "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol",
+        getApproved: "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol",
+        isApprovedForAll: "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol",
+        name: "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol",
+        ownerOf: "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol",
+        safeTransferFrom: "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol",
+        setApprovalForAll: "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol",
+        supportsInterface: "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol",
+        symbol: "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol",
+        tokenByIndex: "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol",
+        tokenOfOwnerByIndex: "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol",
+        tokenURI: "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol",
+        totalSupply: "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol",
+        transferFrom: "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol",
         acceptOwnership: "@openzeppelin/contracts/access/Ownable2Step.sol",
         owner: "@openzeppelin/contracts/access/Ownable2Step.sol",
         pendingOwner: "@openzeppelin/contracts/access/Ownable2Step.sol",
         renounceOwnership: "@openzeppelin/contracts/access/Ownable2Step.sol",
         transferOwnership: "@openzeppelin/contracts/access/Ownable2Step.sol",
+        multicall: "@openzeppelin/contracts/utils/Multicall.sol",
       },
     },
   },

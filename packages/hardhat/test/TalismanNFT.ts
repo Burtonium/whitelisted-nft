@@ -25,20 +25,20 @@ const deploy = async () => {
 };
 
 describe("TalismanNFT", () => {
-  it("Claim should fail lower than 1 ETH", async () => {
+  it("Claim should fail lower than 0.1 ETH", async () => {
     const { talismanNFT } = await loadFixture(deploy);
-    await expect(talismanNFT.claim(proof, { value: parseEther("0.99") })).to.be.revertedWith("Insufficient funds");
+    await expect(talismanNFT.mint(proof, { value: parseEther("0.09") })).to.be.revertedWith("Insufficient funds");
   });
 
   it("Claim should fail with wrong proof", async () => {
     const { talismanNFT } = await loadFixture(deploy);
-    await expect(talismanNFT.claim(proof.slice().reverse(), { value: parseEther("1") })).to.be.revertedWith(
+    await expect(talismanNFT.mint(proof.slice().reverse(), { value: parseEther("0.1") })).to.be.revertedWith(
       "Invalid proof",
     );
   });
 
   it("Claim should work from owner", async () => {
     const { talismanNFT } = await loadFixture(deploy);
-    await expect(await talismanNFT.claim(proof, { value: parseEther("1") })).to.emit(talismanNFT, "NFTClaimed");
+    await expect(await talismanNFT.mint(proof, { value: parseEther("0.1") })).to.emit(talismanNFT, "NFTClaimed");
   });
 });

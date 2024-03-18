@@ -1,31 +1,26 @@
 import "@rainbow-me/rainbowkit/styles.css";
 import { Metadata } from "next";
 import { ScaffoldEthAppWithProviders } from "~~/components/ScaffoldEthAppWithProviders";
-import { ThemeProvider } from "~~/components/ThemeProvider";
 import "~~/styles/globals.css";
 
-const baseUrl = process.env.VERCEL_URL
-  ? `https://${process.env.VERCEL_URL}`
-  : `http://localhost:${process.env.PORT || 3000}`;
+const baseUrl = process.env.NEXT_PUBLIC_VERCEL_URL
+  ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
+  : `http://localhost:${process.env.PORT}`;
 const imageUrl = `${baseUrl}/thumbnail.jpg`;
-
-const title = "Scaffold-ETH 2 App";
-const titleTemplate = "%s | Scaffold-ETH 2";
-const description = "Built with 🏗 Scaffold-ETH 2";
 
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
   title: {
-    default: title,
-    template: titleTemplate,
+    default: "Whitelisted NFT",
+    template: "%s | Whitelisted NFT",
   },
-  description,
+  description: "Built with Scaffold-ETH 2",
   openGraph: {
     title: {
-      default: title,
-      template: titleTemplate,
+      default: "The Whitelisted NFT App",
+      template: "%s | Whitelisted NFT",
     },
-    description,
+    description: "Built with 🏗 Scaffold-ETH 2",
     images: [
       {
         url: imageUrl,
@@ -36,23 +31,18 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     images: [imageUrl],
     title: {
-      default: title,
-      template: titleTemplate,
+      default: "Whitelisted NFT",
+      template: "%s | Whitelisted NFT",
     },
-    description,
-  },
-  icons: {
-    icon: [{ url: "/favicon.png", sizes: "32x32", type: "image/png" }],
+    description: "Built with 🏗 Scaffold-ETH 2",
   },
 };
 
 const ScaffoldEthApp = ({ children }: { children: React.ReactNode }) => {
   return (
-    <html suppressHydrationWarning>
+    <html>
       <body>
-        <ThemeProvider enableSystem>
-          <ScaffoldEthAppWithProviders>{children}</ScaffoldEthAppWithProviders>
-        </ThemeProvider>
+        <ScaffoldEthAppWithProviders>{children}</ScaffoldEthAppWithProviders>
       </body>
     </html>
   );
