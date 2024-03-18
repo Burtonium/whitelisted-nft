@@ -21,7 +21,7 @@ contract TalismanNFT is ERC721Enumerable, Ownable2Step, Multicall {
 	event NFTClaimed(address indexed account, uint256 tokenId);
 
 	bytes32 public whitelistMerkleRoot =
-		0xd178f13658b238eabe23e5aa929690bbd7db7141ecbc36ad190d95d98709aa2b;
+		0x11b5a69df5dc64d2de077c95d593899b649e40bd5fd83b08b914b2d4cc880172;
 
 	uint32 public currentNFTId;
 
@@ -86,11 +86,11 @@ contract TalismanNFT is ERC721Enumerable, Ownable2Step, Multicall {
 	 * @dev Returns an array of token IDs owned by a specific address.
 	 * @return An array of token IDs owned by the specified address.
 	 */
-	function balances() external view returns (uint256[] memory) {
-		uint256 tokenCount = balanceOf(msg.sender);
+	function balances(address addr) external view returns (uint256[] memory) {
+		uint256 tokenCount = balanceOf(addr);
 		uint256[] memory ownedNfts = new uint256[](tokenCount);
 		for (uint256 i = 0; i < tokenCount; i++) {
-			ownedNfts[i] = tokenOfOwnerByIndex(msg.sender, i);
+			ownedNfts[i] = tokenOfOwnerByIndex(addr, i);
 		}
 		return ownedNfts;
 	}
