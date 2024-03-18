@@ -11,14 +11,14 @@ const imageUrl = `${baseUrl}/thumbnail.jpg`;
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
   title: {
-    default: "Whitelisted NFT",
-    template: "%s | Whitelisted NFT",
+    default: "Talisman NFT",
+    template: "%s | Talisman NFT",
   },
   description: "Built with Scaffold-ETH 2",
   openGraph: {
     title: {
-      default: "The Whitelisted NFT App",
-      template: "%s | Whitelisted NFT",
+      default: "The Talisman NFT App",
+      template: "%s | Talisman NFT",
     },
     description: "Built with 🏗 Scaffold-ETH 2",
     images: [
@@ -31,8 +31,8 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     images: [imageUrl],
     title: {
-      default: "Whitelisted NFT",
-      template: "%s | Whitelisted NFT",
+      default: "Talisman NFT",
+      template: "%s | Talisman NFT",
     },
     description: "Built with 🏗 Scaffold-ETH 2",
   },
